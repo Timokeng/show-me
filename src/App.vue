@@ -3,7 +3,7 @@
     <el-row class="main">
       <el-col :span="4" class="left">
         <el-menu
-          default-active='/'
+          :default-active='path'
           class='el-menu-vertical'
           @open='handleOpen'
           @close='handleClose'
@@ -14,10 +14,6 @@
           <el-menu-item index="/">
             <i class="el-icon-menu"></i>
             <span slot="title">Home</span>
-          </el-menu-item>
-          <el-menu-item index="/about">
-            <i class="el-icon-menu"></i>
-            <span solt="title">About</span>
           </el-menu-item>
           <el-menu-item index="/about-me">
             <i class="el-icon-menu"></i>
@@ -34,7 +30,9 @@
         </el-menu>
       </el-col>
       <el-col :span="20" class="right">
-        <router-view/>
+        <el-scrollbar wrap-style="overflow-x:hidden;">
+          <router-view/>
+        </el-scrollbar>
       </el-col>
     </el-row>
   </div>
@@ -42,13 +40,24 @@
 
 <script>
 export default {
+  data: ()=>{
+    return {
+      path: '/'
+    }
+  },
   methods:{
     handleOpen: function(key, keyPath){
       console.log(key, keyPath)
     },
     handleClose: function(key, keyPath){
       console.log(key,keyPath)
+    },
+    onRouteChange: function(){
+      this.path = this.$route.path
     }
+  },
+  watch: {
+    '$route': 'onRouteChange'
   }
 }
 </script>
@@ -59,14 +68,14 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   height: 100vh;
 }
 
 .el-menu-vertical{
   text-align: left;
-  padding: 10px;
+  padding: 20px 5px 0 5px;
+  border: 0;
 }
 
 .main{
@@ -81,6 +90,11 @@ export default {
 
   .right{
     height: 100%;
+    padding: 10px;
   }
+}
+
+.el-scrollbar{
+  height: 100%;
 }
 </style>
