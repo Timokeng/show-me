@@ -4,7 +4,7 @@
             <div class="carousel box">
                 <el-carousel trigger="click" :interval="0" height="300px" @change="onCarChange" ref="carousel">
                     <el-carousel-item v-for="(item, index) in contents" :key="index" :name="String(index)">
-                        <div>{{index}}-{{item.title}}</div>
+                        <div>{{item.title}}</div>
                     </el-carousel-item>
                 </el-carousel>
             </div>
@@ -15,7 +15,7 @@
                         :key="index"
                         :name="String(index)">
                         <template slot="title">
-                            <div class="title">{{index}}-{{item.title}}</div>
+                            <div class="title">{{item.title}}</div>
                         </template>
                         <div class="content">{{item.content}}</div>
                     </el-collapse-item>
@@ -26,32 +26,16 @@
 </template>
 
 <script>
+import api from '@/lib/api.js'
+
 export default {
+    created(){
+        this.getSkill();
+    },
     data: ()=>{
         return{
             nativeName: '0',
-            contents: [
-                {
-                    title: '标题',
-                    content: '内容'
-                },
-                {
-                    title: '标题',
-                    content: '内容'
-                },
-                {
-                    title: '标题',
-                    content: '内容'
-                },
-                {
-                    title: '标题',
-                    content: '内容'
-                },
-                {
-                    title: '标题',
-                    content: '内容'
-                }
-            ]
+            contents: []
         }
     },
     methods: {
@@ -60,7 +44,15 @@ export default {
         },
         onCollChange: function(str){
             this.$refs.carousel.setActiveItem(str);
-        }   
+        },
+        getSkill: async function(){
+            let res = await api.getSkill();
+            let data = undefined;
+            if(res.data && res.data.code == '000'){
+                data = res.data.data;
+            }
+            this.contents = data.contents? data.contents: [];
+        }
     }
 }
 </script>
@@ -81,6 +73,10 @@ export default {
 
 .box{
     margin: 20px;
+}
+
+.carousel{
+    margin-bottom: 5em;
 }
 
 .article{

@@ -35,7 +35,7 @@
                         <span>{{main.title}}</span>
                     </div>
                     <div class="article">
-                        <el-collapse v-model="activeNames">
+                        <el-collapse v-model="activeNames[index]">
                             <el-collapse-item
                                 v-for="(item, index) in main.contents"
                                 :key="index"
@@ -55,20 +55,34 @@
 </template>
 
 <script>
+import api from '@/lib/api.js'
+
 export default {
     created(){
-
+        this.getBasics();
+        this.getMyDetail();
+    },
+    methods: {
+        getBasics: async function(){
+            let res = await api.getBasics();
+            let data = undefined;
+            if(res.data && res.data.code == '000'){
+                data = res.data.data;
+            }
+            this.basics = data ? data.basics:{};
+        },
+        getMyDetail: async function(){
+            let res = await api.getMyDetail();
+            let data = undefined;
+            if(res.data && res.data.code == '000'){
+                data = res.data.data;
+            }
+            this.mains = data? data.mains:[];
+        }
     },
     data: ()=>{
         return {
-            basics: {
-                name: '李梓豪',
-                age: '23',
-                school: '昆明理工大学',
-                major: '计算机科学与技术',
-                goTime: '2019-7-1',
-                job: '前端开发'
-            },
+            basics: {},
             activeNames: [],
             mains: [
                 {
