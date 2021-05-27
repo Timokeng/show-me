@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-row class="main">
-      <el-col :span="4" class="left">
+      <el-col :span="3" class="left">
         <el-menu
           :default-active='path'
           class='el-menu-vertical'
@@ -29,7 +29,7 @@
           </el-menu-item>
         </el-menu>
       </el-col>
-      <el-col :span="20" class="right">
+      <el-col :span="21" class="right">
         <el-scrollbar wrap-style="overflow-x:hidden;">
           <router-view/>
         </el-scrollbar>
